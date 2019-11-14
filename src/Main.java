@@ -1,20 +1,23 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    
+
     //poor-mans database
     private static ArrayList<Admin> adminDB = new ArrayList<>();
     private static ArrayList<Student> studentDB = new ArrayList<>();
     private static ArrayList<Faculty> facultyDB = new ArrayList<>();
     private static ArrayList<Course> courseDB = new ArrayList<>();
     private static ArrayList<Link> linkDB = new ArrayList<>();
-    
+
     private static Scanner keyboard = new Scanner(System.in);
-    
+
+    // login info being saved
+    private static String userName, userPassword;
+    private static int counter = 0;
+
     public static void main(String[] args) {
-        
+
         //call database constructor methods
         createAdmins();
         CreateStudentDB();
@@ -22,14 +25,10 @@ public class Main {
         CreateCourseDB();
         CreateLinkDB();
 
-        // list contents of databases
-//        showStudentDB();
-//        showFacultyDB();
-//        showCourseDB();
-//        showAllLinksByCourse();
-
         // adding user information
         String userStr;
+        boolean switchBoo = true;
+        boolean switchBoo2 = true;
 
         // requires valid login to access app
         validateLogIn();
@@ -44,50 +43,37 @@ public class Main {
                     "\t6 - Edit Course\n" +
                     "\t7 - Enroll Student\n" +
                     "\t8 - Hire a Faculty\n" +
-                    "\t9 - View Databases\n\n" +
-                    "\tEnter \"Q\" to Logout\n\n" +
+                    "\t9 - View Databases\n" +
+                    "\t10 - User info \n\n" +
+                    "\tEnter \"0\" to Logout\n\n" +
                     "Your Choice: ");
             userStr = keyboard.nextLine();
 
-            if (userStr.equalsIgnoreCase("1")) {
-                createNewStudent();
-            } else if (userStr.equalsIgnoreCase("2")) {
-                createNewFaculty();
-            } else if (userStr.equalsIgnoreCase("3")) {
-                editStudent();
-            } else if (userStr.equalsIgnoreCase("4")) {
-                editFaculty();
-            } else if (userStr.equalsIgnoreCase("5")) {
-                createNewCourse();
-            } else if (userStr.equalsIgnoreCase("6")) {
-                editCourse();
-            } else if (userStr.equalsIgnoreCase("7")) {
-                enrollStudent();
-            } else if (userStr.equalsIgnoreCase("8")) {
-                hireFaculty();
-            } else if (userStr.equalsIgnoreCase("9")) {
-                System.out.print("Which database would you like to display? " +
-                        "\nStudent [\"S\"] Faculty [\"F\"] Courses [\"C\"] All [\"A\"] Quit [\"Q\"]: ");
-                userStr = keyboard.nextLine();
-
-                if (userStr.equalsIgnoreCase("S")) {
-                    showStudentDB();
-                } else if (userStr.equalsIgnoreCase("F")) {
-                    showFacultyDB();
-                } else if (userStr.equalsIgnoreCase("C")) {
-                    showCourseDB();
-                } else if (userStr.equalsIgnoreCase("A")) {
-                    showAllLinksByCourse();
-                } else if (userStr.equalsIgnoreCase("Q")) {
-                    break;
+            switch (userStr) {
+                case "1": createNewStudent(); break;
+                case "2": createNewFaculty(); break;
+                case "3": editStudent(); break;
+                case "4": editFaculty(); break;
+                case "5": createNewCourse(); break;
+                case "6": editCourse(); break;
+                case "7": enrollStudent(); break;
+                case "8": hireFaculty(); break;
+                case "9": System.out.print("Which database would you like to display? " +
+                        "\nStudent [1] Faculty [2] Courses [3] All [4] Quit [0]: ");
+                    userStr = keyboard.nextLine();
+                    switch (userStr) {
+                        case "1": showStudentDB(); break;
+                        case "2": showFacultyDB(); break;
+                        case "3": showCourseDB(); break;
+                        case "4": showAllLinksByCourse(); break;
+                        case "0": break;
+                    }
+                case "10": System.out.println("\n★ Username: " + userName); break;
+                case "0": System.out.println("You have logged out! Goodbye <3");switchBoo = false; break;
+                default:
+                    System.out.println("Invalid option");break;
                 }
-
-            } else if (userStr.equalsIgnoreCase("Q")) {
-                System.out.println("\nYou have logged out! See ya later <3");
-               break;
-            }
-        } while (true);
-
+            } while (switchBoo);
     }
 
     private static void createNewStudent() {
@@ -343,15 +329,6 @@ public class Main {
         return "Unknown";
     }
 
-    private static String LookUpFacultyName(int facultyId) {
-        for (Faculty faculty : facultyDB) {
-            if (faculty.getId() == facultyId) {
-                return faculty.getName();
-            }
-        }
-        return "Unknown";
-    }
-
     private static String LookUpCourseName(int courseId) {
         for (Course course : courseDB) {
             if (course.getId() == courseId) {
@@ -363,6 +340,7 @@ public class Main {
 
     private static void createAdmins(){
         adminDB.add(new Admin(1, "pierz", "pierz@gmail.com", "password"));
+        adminDB.add(new Admin(2, "pizza", "piez", "password"));
     }
 
     private static void CreateStudentDB() {
@@ -384,10 +362,6 @@ public class Main {
     }
 
     private static void CreateCourseDB() {
-        // FACULTY:
-        // 1 = Mr Collins || 2 = Mrs Barry || 3 = Mrs Mila || 4 = Mr Moss
-        // courseDB.add(new Course(1, 1, "Science", "Blow stuff up!"));
-
         courseDB.add(new Course(1, 2, "Science", "Blow stuff up!"));
         courseDB.add(new Course(2, 1, "Math", "Fall asleep."));
         courseDB.add(new Course(3, 4, "Art", "Draw even though you suck lol."));
@@ -395,12 +369,6 @@ public class Main {
     }
 
     private static void CreateLinkDB() {
-        // STUDENTS:
-        // 1 = Jenn || 2 = Mark || 3 = Tyrone || 4 = Justine || 5 = Alexa || 6 = Mary || 7 = Kevin
-        
-        // COURSE:
-        // 1 = Science || 2 = Math || 3 = Art || 4 = PE
-        
         linkDB.add(new Link(1, 1, 1, "January 2020"));
         linkDB.add(new Link(2, 2, 1, "January 2020"));
 
@@ -417,13 +385,9 @@ public class Main {
     private static boolean validateLogIn() {
         // requires user to input valid username and password to use app
 
-        String userName, userPassword;
-        int counter = 0;
-
         while (true) {
 
             System.out.println("\n|▓▓▓【☆】▓▓▓| Pierz's School System |▓▓▓【☆】▓▓▓|");
-
             System.out.print("Please enter a valid username: ");
             userName = keyboard.nextLine();
             System.out.print("Please enter a valid password: ");

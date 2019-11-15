@@ -6,4 +6,8 @@ public class Student extends Person {
         super(id, name, email, password);
     }
 
+    @Override
+    public String toString(){
+        return ("\tStudent Id: " + this.getId() + "\tStudent Name: " + this.getName());
+    }
 }

@@ -58,16 +58,7 @@ public class Main {
                 case "6": editCourse(); break;
                 case "7": enrollStudent(); break;
                 case "8": hireFaculty(); break;
-                case "9": System.out.print("Which database would you like to display? " +
-                        "\nStudent [1] Faculty [2] Courses [3] All [4] Quit [0]: ");
-                    userStr = keyboard.nextLine();
-                    switch (userStr) {
-                        case "1": showStudentDB(); break;
-                        case "2": showFacultyDB(); break;
-                        case "3": showCourseDB(); break;
-                        case "4": showAllLinksByCourse(); break;
-                        case "0": break;
-                    }
+                case "9":  showAll(); break;
                 case "10": System.out.println("\n★ Username: " + userName); break;
                 case "0": System.out.println("You have logged out! Goodbye <3");switchBoo = false; break;
                 default:
@@ -133,7 +124,6 @@ public class Main {
 
     private static void editStudent() {
         System.out.println("Enter the ID of the person you would like to edit...");
-        showStudentDB();
         System.out.print("Your choice: ");
         int userId = keyboard.nextInt();
         keyboard.nextLine();
@@ -164,7 +154,6 @@ public class Main {
 
     private static void editFaculty() {
         System.out.println("Enter the ID of the person you would like to edit...");
-        showFacultyDB();
         System.out.print("Your choice: ");
         int userId = keyboard.nextInt();
         keyboard.nextLine();
@@ -191,7 +180,6 @@ public class Main {
 
     private static void editCourse() {
         System.out.println("Enter the ID of the Course you would like to edit...");
-        showCourseDB();
         System.out.print("Your choice: ");
         int userId = keyboard.nextInt();
         keyboard.nextLine();
@@ -218,7 +206,6 @@ public class Main {
 
     private static void hireFaculty() {
         System.out.println("Enter the ID of the Course you would like to assign a new teacher to...");
-        showCourseDB();
         System.out.print("Your choice: ");
         int userId = keyboard.nextInt();
         keyboard.nextLine();
@@ -233,7 +220,6 @@ public class Main {
 
         if (myCourse != null) {
             System.out.print("Please enter the ID of the Faculty Member you would like to hire: ");
-            showFacultyDB();
             System.out.print("Your choice: ");
             int userStr = keyboard.nextInt();
             myCourse.setId(userStr);
@@ -247,7 +233,6 @@ public class Main {
     private static void enrollStudent() {
         int studentId;
         System.out.println("\nPlease enter the ID of the student you wish to enroll...");
-        showStudentDB();
         System.out.print("Your choice: ");
         studentId = keyboard.nextInt();
         keyboard.nextLine();
@@ -255,7 +240,6 @@ public class Main {
 
         int courseId;
         System.out.println("\nPlease enter the ID of the Course you would like " + studentName + " be enrolled in.");
-        showCourseDB();
         System.out.print("Your choice: ");
         courseId = keyboard.nextInt();
         keyboard.nextLine();
@@ -272,52 +256,20 @@ public class Main {
         linkDB.add(new Link(id, studentId, courseId, enrollDate));
     }
 
-    private static void showAllLinksByCourse() {
-        int teacherCount = 0;
-
-        System.out.println();
-        for (Course course : courseDB) {
-            System.out.println("★ " + course.getName() + ": ");
-            System.out.println("\tStudents: ");
-            // loop through all links
-            for (Link link : linkDB) {
-                // see if the link belongs to current company
-                if (link.getCourseId() == course.getId()) {
-                    // loop through all students
-                    for (Student student : studentDB) {
-                        if (student.getId() == link.getStudentId()) {
-                            System.out.println("\tId: " + student.getId() + "\tName: " + student.getName());
-                        }
-                    }
-                }
-            }
-            System.out.println();
+    public static void showAll(){
+        System.out.println("\nAll Students: ");
+        for(Student student : studentDB){
+            System.out.println(student.toString());
         }
-    }
 
-    private static void showStudentDB() {
-        // for loop goes through database array and prints its contents
-        System.out.println("\nStudent Database: ");
-        for (Student student : studentDB) {
-            System.out.println("\tId: " + student.getId() + "\tName: " + student.getName());
+        System.out.println("\nAll Faculty: ");
+        for(Faculty faculty : facultyDB){
+            System.out.println(faculty.toString());
         }
-        System.out.println();
-    }
-
-    private static void showFacultyDB() {
-        System.out.println("\nFaculty Database: ");
-        for (Faculty faculty : facultyDB) {
-            System.out.println("\tId: " + faculty.getId() + "\tName: " + faculty.getName());
+        System.out.println("\nAll Classes: ");
+        for(Course course : courseDB){
+            System.out.println(course.toString());
         }
-        System.out.println();
-    }
-
-    private static void showCourseDB() {
-        System.out.println("\nCourse Database: ");
-        for (Course course : courseDB) {
-            System.out.println("\tId: " + course.getId() + "\tName: " + course.getName());
-        }
-        System.out.println();
     }
 
     private static String LookUpStudentName(int studentId) {
@@ -409,3 +361,55 @@ public class Main {
         }
     }
 }
+
+
+
+//    completely unnecessary but this took me forever so please appraciate the styling
+//
+//    private static void showAllLinksByCourse() {
+//        int teacherCount = 0;
+//
+//        System.out.println();
+//        for (Course course : courseDB) {
+//            System.out.println("★ " + course.getName() + ": ");
+//            System.out.println("\tStudents: ");
+//            // loop through all links
+//            for (Link link : linkDB) {
+//                // see if the link belongs to current company
+//                if (link.getCourseId() == course.getId()) {
+//                    // loop through all students
+//                    for (Student student : studentDB) {
+//                        if (student.getId() == link.getStudentId()) {
+//                            System.out.println("\tId: " + student.getId() + "\tName: " + student.getName());
+//                        }
+//                    }
+//                }
+//            }
+//            System.out.println();
+//        }
+//    }
+
+//    private static void showStudentDB() {
+//        // for loop goes through database array and prints its contents
+//        System.out.println("\nStudent Database: ");
+//        for (Student student : studentDB) {
+//            System.out.println("\tId: " + student.getId() + "\tName: " + student.getName());
+//        }
+//        System.out.println();
+//    }
+//
+//    private static void showFacultyDB() {
+//        System.out.println("\nFaculty Database: ");
+//        for (Faculty faculty : facultyDB) {
+//            System.out.println("\tId: " + faculty.getId() + "\tName: " + faculty.getName());
+//        }
+//        System.out.println();
+//    }
+//
+//    private static void showCourseDB() {
+//        System.out.println("\nCourse Database: ");
+//        for (Course course : courseDB) {
+//            System.out.println("\tId: " + course.getId() + "\tName: " + course.getName());
+//        }
+//        System.out.println();
+//    }

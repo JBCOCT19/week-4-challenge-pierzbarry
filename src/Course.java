@@ -14,6 +14,11 @@ public class Course {
         this.description = description;
     }
 
+    @Override
+    public String toString(){
+        return ("\tCourse Id: " + this.getId() + "\tCourse Name: " + this.getName());
+    }
+
     public int getId() {
         return id;
     }
